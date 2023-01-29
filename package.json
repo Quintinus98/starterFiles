@@ -5,11 +5,11 @@
   "main": "server.ts",
   "scripts": {
     "start": "node src/server.ts",
-    "lint": "eslint . --ext .ts --fix",
+    "test": "export ENV=test && npx tsc && db-migrate up -e test && jasmine && db-migrate down -e test",
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess \"node ./dist/server.js\"",
-    "prettier": "npx prettier --write src/",
     "tsc": "tsc",
-    "test": "jasmine-ts"
+    "lint": "eslint . --ext .ts --fix",
+    "prettier": "npx prettier --write src/"
   },
   "author": "Obodo David",
   "license": "ISC",

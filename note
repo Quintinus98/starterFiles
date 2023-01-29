@@ -1,0 +1,8 @@
+psql postgres
+CREATE USER full_stack_user WITH PASSWORD 'password123';
+CREATE DATABASE full_stack_dev;
+GRANT ALL PRIVILEGES ON DATABASE full_stack_dev TO full_stack_user;
+
+
+CREATE TABLE mythical_weapons (name VARCHAR(100), type VARCHAR(50), weight integer, id SERIAL PRIMARY KEY);
+DROP TABLE mythical_weapons;
