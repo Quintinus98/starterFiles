@@ -6,3 +6,5 @@ GRANT ALL PRIVILEGES ON DATABASE full_stack_dev TO full_stack_user;
 
 CREATE TABLE mythical_weapons (name VARCHAR(100), type VARCHAR(50), weight integer, id SERIAL PRIMARY KEY);
 DROP TABLE mythical_weapons;
+CREATE TABLE IF NOT EXISTS users (username VARCHAR(100), password VARCHAR(50), id SERIAL PRIMARY KEY);
+DROP TABLE users
