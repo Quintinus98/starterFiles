@@ -1,9 +1,8 @@
 import express, {Request, Response} from "express";
-import bodyParser from "body-parser";
 import cors from "cors";
 
-import users_routes from "./handlers/user";
-import mythical_weapons_routes from "./handlers/mythical_weapons";
+import userRoute from "./routes/usersRoute";
+import mythicalWeaponRouter from "./routes/mythicalWeapons";
 
 const app: express.Application = express();
 const port = 3000;
@@ -19,8 +18,9 @@ app.get("/", (_req: Request, res: Response): void => {
   }
 });
 
-mythical_weapons_routes(app);
-users_routes(app);
+app.use("/mythical_weapons", mythicalWeaponRouter);
+app.use("/users", userRoute);
+
 app.listen(port, (): void => {
   console.log(`Server running on http://localhost:${port}`);
 });

@@ -1,10 +1,15 @@
 psql postgres
-CREATE USER full_stack_user WITH PASSWORD 'password123';
-CREATE DATABASE full_stack_dev;
-GRANT ALL PRIVILEGES ON DATABASE full_stack_dev TO full_stack_user;
+CREATE USER test_user WITH PASSWORD 'password123';
+CREATE DATABASE test;
+GRANT ALL PRIVILEGES ON DATABASE test TO test_user;
 
 
-CREATE TABLE mythical_weapons (name VARCHAR(100), type VARCHAR(50), weight integer, id SERIAL PRIMARY KEY);
+CREATE TABLE IF NOT EXISTS mythical_weapons (name VARCHAR(100), type VARCHAR(50), weight integer, id SERIAL PRIMARY KEY);
+CREATE TABLE IF NOT EXISTS users (firstname VARCHAR(100), lastname VARCHAR(100), username VARCHAR(100), password text, id SERIAL PRIMARY KEY);
 DROP TABLE mythical_weapons;
-CREATE TABLE IF NOT EXISTS users (username VARCHAR(100), password VARCHAR(50), id SERIAL PRIMARY KEY);
-DROP TABLE users
+DROP TABLE users;
+
+db-migrate up
+db-migrate down
+
+"test": "export ENV=test && npx tsc && db-migrate up -e test && jasmine && db-migrate down -e test",

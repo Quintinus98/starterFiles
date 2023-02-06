@@ -1,14 +1,14 @@
-import express, {Request, Response} from "express";
+import {Request, Response} from "express";
 import { user, User } from "../models/user";
 
 const store = new User();
 
-const index = async (_req: Request, res: Response) => {
+export const index = async (_req: Request, res: Response) => {
   const allUser = await store.index();
   res.json(allUser);
 };
 
-const show = async (req: Request, res: Response) => {
+export const show = async (req: Request, res: Response) => {
   try {
     const id = parseInt(req.params.id);
     const singleUser = await store.show(id);
@@ -18,7 +18,7 @@ const show = async (req: Request, res: Response) => {
   }
 };
 
-const create = async (req: Request, res: Response) => {
+export const create = async (req: Request, res: Response) => {
   try {
     const user: user = {
       firstname: req.body.firstname,
@@ -33,17 +33,21 @@ const create = async (req: Request, res: Response) => {
   }
 };
 
-const destroy = async (req: Request, res: Response) => {
+export const destroy = async (req: Request, res: Response) => {
   const id = parseInt(req.params.id);
   const user = await store.delete(id);
   res.json(user);
 };
 
-const users_routes = (app: express.Application) => {
-  app.get("/auth", index);
-  app.get("/auth/:id", show);
-  app.post("/auth/", create);
-  app.delete("/auth/:id", destroy);
+export const authenticate =async (req: Request, res: Response) => {
+  try {
+    const user = {
+      username: req.body.username,
+      password: req.body.password,
+    };
+    const existingUser = await store.authenticate(user);
+    res.json(existingUser);
+  } catch (error) {
+    res.status(400).json(`${error}`);
+  }
 };
-
-export default users_routes;

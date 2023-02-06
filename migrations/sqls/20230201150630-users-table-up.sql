@@ -1,1 +1,0 @@
-CREATE TABLE IF NOT EXISTS users (firstname VARCHAR(100), lastname VARCHAR(100), username VARCHAR(100), password VARCHAR(150), id SERIAL PRIMARY KEY);

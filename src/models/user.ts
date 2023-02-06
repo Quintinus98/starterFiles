@@ -12,13 +12,14 @@ const {
 } = process.env;
 
 export type user = {
-    id?: number,
-    firstname: string,
-    lastname: string,
-    username: string, 
-    password: string,
+  id?: number,
+  firstname: string,
+  lastname: string,
+  username: string, 
+  password: string,
 }
 
+const pepper = (BCRYPT_PASSWORD as unknown) as string;
 export class User {
   async index(): Promise<user[]> {
     try {
@@ -49,7 +50,6 @@ export class User {
   async create(u: user): Promise<user> {
     try { 
       const conn = await Client.connect();
-      const pepper = (BCRYPT_PASSWORD as unknown) as string;
       const saltRounds = parseInt((SALT_ROUNDS as unknown) as string);
       const sql = "INSERT INTO users (firstname, lastname, username, password) VALUES ($1, $2, $3, $4) RETURNING *";
 
@@ -76,5 +76,20 @@ export class User {
       throw new Error(`Could not delete user ${id}. ${error}`);
             
     }
+  }
+  async authenticate (u: {username: string, password: string}) {
+    const conn = await Client.connect();
+    const sql = "SELECT password FROM users WHERE username=($1)";
+    const result = await conn.query(sql, [u.username]);
+
+    conn.release();
+    if (result.rows.length) {
+      const user = result.rows[0];
+      
+      if (bcrypt.compareSync(u.password+pepper, user.password)) {
+        return user;
+      }
+    }
+    return null;
   }
 }
